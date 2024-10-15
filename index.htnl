@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map of India - Most Grown Crops</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        .map-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        svg {
+            width: 70%;
+            height: auto;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Map of India - Most Grown Crops</h1>
+    <div class="map-container">
+        <svg xmlns="http://www.w3.org/2000/svg" id="india-map" viewBox="0 0 1000 1000">
+            <!-- Approximate SVG path data for Indian states -->
+            <path id="andhra-pradesh" d="M300,500 L320,520 L310,540 L290,530 Z" fill="lightgreen" stroke="black"></path>
+            <path id="arunachal-pradesh" d="M700,100 L720,120 L710,140 L690,130 Z" fill="lightblue" stroke="black"></path>
+            <path id="assam" d="M600,150 L620,170 L610,190 L590,180 Z" fill="lightcoral" stroke="black"></path>
+            <path id="bihar" d="M500,200 L520,220 L510,240 L490,230 Z" fill="lightyellow" stroke="black"></path>
+            <path id="chhattisgarh" d="M450,400 L470,420 L460,440 L440,430 Z" fill="lightseagreen" stroke="black"></path>
+            <path id="goa" d="M300,700 L320,720 L310,740 L290,730 Z" fill="lightgoldenrodyellow" stroke="black"></path>
+            <path id="gujarat" d="M200,300 L220,320 L210,340 L190,330 Z" fill="lightpink" stroke="black"></path>
+            <path id="haryana" d="M450,200 L470,220 L460,240 L440,230 Z" fill="lightblue" stroke="black"></path>
+            <path id="himachal-pradesh" d="M400,150 L420,170 L410,190 L390,180 Z" fill="lightcoral" stroke="black"></path>
+            <path id="jharkhand" d="M480,260 L500,280 L490,300 L470,290 Z" fill="lightyellow" stroke="black"></path>
+            <path id="karnataka" d="M250,500 L270,520 L260,540 L240,530 Z" fill="lightgreen" stroke="black"></path>
+            <path id="kerala" d="M230,600 L250,620 L240,640 L220,630 Z" fill="lightseagreen" stroke="black"></path>
+            <path id="madhya-pradesh" d="M400,350 L420,370 L410,390 L390,380 Z" fill="lightgoldenrodyellow" stroke="black"></path>
+            <path id="maharashtra" d="M300,450 L320,470 L310,490 L290,480 Z" fill="lightsalmon" stroke="black"></path>
+            <path id="manipur" d="M650,150 L670,170 L660,190 L640,180 Z" fill="lightcoral" stroke="black"></path>
+            <path id="meghalaya" d="M620,130 L640,150 L630,170 L610,160 Z" fill="lightblue" stroke="black"></path>
+            <path id="mizoram" d="M680,160 L700,180 L690,200 L670,190 Z" fill="lightgreen" stroke="black"></path>
+            <path id="nagaland" d="M700,120 L720,140 L710,160 L690,150 Z" fill="lightpink" stroke="black"></path>
+            <path id="odisha" d="M550,400 L570,420 L560,440 L540,430 Z" fill="lightyellow" stroke="black"></path>
+            <path id="punjab" d="M400,180 L420,200 L410,220 L390,210 Z" fill="lightseagreen" stroke="black"></path>
+            <path id="rajasthan" d="M250,250 L270,270 L260,290 L240,280 Z" fill="lightblue" stroke="black"></path>
+            <path id="sikkim" d="M550,150 L570,170 L560,190 L540,180 Z" fill="lightcoral" stroke="black"></path>
+            <path id="tamil-nadu" d="M250,600 L270,620 L260,640 L240,630 Z" fill="lightgoldenrodyellow" stroke="black"></path>
+            <path id="telangana" d="M330,450 L350,470 L340,490 L320,480 Z" fill="lightblue" stroke="black"></path>
+            <path id="tripura" d="M600,130 L620,150 L610,170 L590,160 Z" fill="lightyellow" stroke="black"></path>
+            <path id="uttar-pradesh" d="M480,250 L500,270 L490,290 L470,280 Z" fill="lightgreen" stroke="black"></path>
+            <path id="uttarakhand" d="M460,200 L480,220 L470,240 L450,230 Z" fill="lightcoral" stroke="black"></path>
+            <path id="west-bengal" d="M580,250 L600,270 L590,290 L570,280 Z" fill="lightyellow" stroke="black"></path>
+            <!-- Add paths for Union Territories similarly -->
+        </svg>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const stateData = {
+            "andhra-pradesh": "Rice",
+            "arunachal-pradesh": "Rice",
+            "assam": "Tea",
+            "bihar": "Rice",
+            "chhattisgarh": "Rice",
+            "goa": "Rice",
+            "gujarat": "Cotton",
+            "haryana": "Wheat",
+            "himachal-pradesh": "Apple",
+            "jharkhand": "Rice",
+            "karnataka": "Rice",
+            "kerala": "Coconut",
+            "madhya-pradesh": "Wheat",
+            "maharashtra": "Sugarcane",
+            "manipur": "Rice",
+            "meghalaya": "Rice",
+            "mizoram": "Rice",
+            "nagaland": "Rice",
+            "odisha": "Rice",
+            "punjab": "Wheat",
+            "rajasthan": "Pearl Millet (Bajra)",
+            "sikkim": "Cardamom",
+            "tamil-nadu": "Rice",
+            "telangana": "Rice",
+            "tripura": "Rice",
+            "uttar-pradesh": "Sugarcane",
+            "uttarakhand": "Rice",
+            "west-bengal": "Rice",
+            // Add more union territories here
+        };
+
+        const tooltip = document.getElementById('tooltip');
+        const map = document.getElementById('india-map');
+
+        // Function to show tooltip
+        map.addEventListener('mouseover', (event) => {
+            if (stateData[event.target.id]) {
+                tooltip.innerHTML = `<strong>${stateData[event.target.id]}</strong>`;
+                tooltip.style.opacity = 1;
+            }
+        });
+
+        // Function to move tooltip with mouse
+        map.addEventListener('mousemove', (event) => {
+            tooltip.style.left = `${event.pageX + 10}px`;
+            tooltip.style.top = `${event.pageY + 10}px`;
+        });
+
+        // Hide tooltip when not hovering over a state
+        map.addEventListener('mouseout', () => {
+            tooltip.style.opacity = 0;
+        });
+    </script>
+
+</body>
+</html>
+  
